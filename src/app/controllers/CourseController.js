@@ -15,6 +15,7 @@ class CourseController {
   create(req, res, next) {
     res.render("courses/create");
   }
+  
   // [POST] /course/store
   store(req, res, next) {
     // res.json(req.body);
