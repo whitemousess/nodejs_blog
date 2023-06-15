@@ -18,7 +18,6 @@ class CourseController {
 
   // [POST] /course/store
   store(req, res, next) {
-    // res.json(req.body);
     req.body.image = `https://i.ytimg.com/vi/${req.body.videoId}/hqdefault.jpg`;
     const course = new Course(req.body);
     course.save()
@@ -37,6 +36,7 @@ class CourseController {
 
   // [PUT] /course/:id
   update(req,res,next){
+    req.body.image = `https://i.ytimg.com/vi/${req.body.videoId}/hqdefault.jpg`;
     Course.updateOne({_id: req.params.id} , req.body)
     .then(() => {
       res.redirect ("/me/stored/courses")
@@ -61,7 +61,7 @@ class CourseController {
     })
     .catch(next)
   }
-  // [restore] /course/:id/restore
+  // [PATCH] /course/:id/restore
   restore(req, res, next){
     Course.restore({_id: req.params.id})
     .then(() => {
@@ -70,6 +70,29 @@ class CourseController {
     .catch(next)
   }
 
+  // [POST] /courses/handle-form-actions
+  // used in switch case of many select
+  HandleFormActions(req,res,next) {
+    switch(req.body.action){
+      case 'delete':
+        Course.delete({_id: { $in :req.body.courseIds }})
+          .then(() => {res.redirect('back')})
+          .catch(next)
+        break;
+      case 'restore':
+        Course.restore({_id: { $in :req.body.courseIds }})
+          .then(() => {res.redirect('back')})
+          .catch(next)
+        break;
+      case 'forceDestroy':
+        Course.deleteMany({_id: { $in :req.body.courseIds }})
+          .then(() => {res.redirect('back')})
+          .catch(next)
+        break;
+      default:
+      res.json({message: 'Action invalid'})
+    }
+  }
 }
 
 module.exports = new CourseController();
