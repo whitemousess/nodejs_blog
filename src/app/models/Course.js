@@ -4,7 +4,6 @@ const mongooseDelete = require("mongoose-delete");
 const Schema = mongoose.Schema;
 mongoose.plugin(slug);
 
-
 const Course = new Schema(
   {
     name: { type: String, required: true },

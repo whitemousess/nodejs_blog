@@ -18,9 +18,11 @@ class CourseController {
 
   // [POST] /course/store
   store(req, res, next) {
+    // res.json(req.body);
     req.body.image = `https://i.ytimg.com/vi/${req.body.videoId}/hqdefault.jpg`;
     const course = new Course(req.body);
-    course.save()
+    course
+      .save()
       .then(() => res.redirect("/me/stored/courses"))
       .catch((error) => {});
   }

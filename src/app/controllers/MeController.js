@@ -17,7 +17,7 @@ class MeController {
       .catch(next);
   }
 
-  // [GET] /me/trash/courses
+
   trashCourses(req, res, next) {
     Course.findDeleted({})
       .then((courses) =>
