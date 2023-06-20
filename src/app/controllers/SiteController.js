@@ -8,10 +8,10 @@ class SiteController {
   index(req, res, next ) {
     Course.find({})
       .then((courses) => {
-        
-        res.render('home',{
-          courses: multipleMongooseToObject(courses)
-        });
+        // res.render('home',{
+        //   courses: multipleMongooseToObject(courses)
+        // });
+        res.json({data: multipleMongooseToObject(courses)})
       })
       .catch(next);
 
