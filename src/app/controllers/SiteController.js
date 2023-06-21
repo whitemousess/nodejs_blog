@@ -6,7 +6,12 @@ const { multipleMongooseToObject } = require("../../util/mongoose");
 class SiteController {
   // [GET] /
   index(req, res, next ) {
-    Course.find({})
+    let params = [];
+    let objWhere = {};
+    params.q = req.query.q
+    if(params.q !== '') objWhere.name  = new RegExp(params.q, 'i');
+
+    Course.find(objWhere).sort({_id: -1})
       .then((courses) => {
         // res.render('home',{
         //   courses: multipleMongooseToObject(courses)
