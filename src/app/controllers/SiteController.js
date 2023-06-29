@@ -28,6 +28,23 @@ class SiteController {
   search(req, res) {
     res.render("search");
   }
+
+  searchCourse(req, res, next) {
+    let params = [];
+    let objWhere = {};
+    params.q = req.body.q
+    if(params.q !== '') objWhere.name  = new RegExp(params.q, 'i');
+
+    Course.find(objWhere).sort({_id: -1})
+    .then((courses) => {
+      // res.render('courses/search',{
+      //   courses: multipleMongooseToObject(courses)
+      // });
+      res.json({data: multipleMongooseToObject(courses)})
+    })
+    .catch(next);
+
+  }
 }
 
 module.exports = new SiteController();
